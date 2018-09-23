@@ -1,6 +1,6 @@
-import 'dart:_http';
 import 'dart:async';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'package:formula1_statistics_flutter/model/RequestParameters.dart';
 import 'package:formula1_statistics_flutter/model/ResponseModel.dart';
@@ -11,19 +11,17 @@ class ApiRequestHelper {
   Future<ResponseModel> performApiRequest(RequestParameters parameters) async {
     if (parameters == null) return null;
 
-    var httpClient = new HttpClient();
-
+    var httpClient = new http.Client();
+    
     try {
       for (var i = 0; i < retryCount; i++) {
         switch(parameters.requestType)
         {
           case RequestTypeEnum.Get:
-          var request = await httpClient.getUrl(Uri.parse(parameters.url));
-          var response = await request.close();
+          var response = await httpClient.get(Uri.parse(parameters.url));
 
-          if (response.statusCode == HttpStatus.ok) {
-            var jsonResponse = await response.transform(utf8.decoder).join();
-            var data = jsonDecode(jsonResponse);
+          if (response.statusCode == 200) {
+            var data = jsonDecode(response.body);
             return new ResponseModel(true, data);
           } else {
             return new ResponseModel(false, null);
