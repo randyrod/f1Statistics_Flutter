@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:formula1_statistics_flutter/views/RacesView.dart';
 
 void main() => runApp(new MyApp());
 
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: new Text("Formula 1 Stats"),
+      home: RacesView()
     );
   }
 }
